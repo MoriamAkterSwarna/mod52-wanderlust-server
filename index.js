@@ -41,12 +41,26 @@ async function run() {
 
     // Destination related API endpoints
 
+
+    app.get("/api/destinations", async (req, res) => {
+      const { category } = req.query;
+      const query = {};
+      if (category) {
+        query.category = category;
+      }
+      const destinations = await destinationsCollection.find(query).toArray();
+      res.json(destinations);
+    });
+
+   
+
     app.post("/api/destinations", async (req, res) => {
       const destination = req.body;
       console.log("req.body", req.body)
       const result = await destinationsCollection.insertOne(destination);
       res.json(result);
     });
+
 
 
     // Send a ping to confirm a successful connection
