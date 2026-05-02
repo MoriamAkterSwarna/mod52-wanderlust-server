@@ -79,6 +79,20 @@ async function run() {
       res.json(result);
     });
 
+    app.patch("/api/destinations/:id", async (req, res) => {
+      const id = req.params.id;
+      const destination = req.body;
+      const result = await destinationsCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: destination },
+        { upsert: true },
+      );
+      const updated = await destinationsCollection.findOne({
+        _id: new ObjectId(id),
+      });
+      res.json({...result, updated});
+    });
+
 
 
     // Send a ping to confirm a successful connection
