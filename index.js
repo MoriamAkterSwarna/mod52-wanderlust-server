@@ -53,6 +53,24 @@ async function run() {
     });
 
    
+    app.get("/api/featured-destinations", async (req, res) => {
+      const featuredDestinations = await destinationsCollection
+        .find()
+        .limit(6)
+        .toArray();
+      res.json(featuredDestinations);
+    });
+
+
+    app.get("/api/destinations/:id", async (req, res) => {
+          const id = req.params.id;
+          const destination = await destinationsCollection.findOne({
+            _id: new ObjectId(id),
+          });
+          res.json(destination);
+        });
+
+
 
     app.post("/api/destinations", async (req, res) => {
       const destination = req.body;
